@@ -1,8 +1,9 @@
-from colorama import Back, Fore
 from dataclasses import asdict, dataclass
 from random import choice, randint, randrange
 from time import sleep
-from typing import Dict, List
+from typing import List
+
+from colorama import Back, Fore
 
 
 @dataclass
@@ -78,6 +79,8 @@ class Character:
 class Human(Character):
     """People forge great armor.
 People have double HP and double protection."""
+    COLOR = Fore.CYAN
+
     def __init__(self,
                  name: str,
                  hp: int,
@@ -90,6 +93,8 @@ People have double HP and double protection."""
 class Ork(Character):
     """Just bloodthirsty killers.
 Orks have double attack."""
+    COLOR = Fore.LIGHTRED_EX
+
     def __init__(self,
                  name: str,
                  hp: int,
@@ -102,6 +107,8 @@ Orks have double attack."""
 class Elf(Character):
     """Elfs are famous for their medicine.
 When Elfs are attacked, they recover 5 HP."""
+    COLOR = Fore.GREEN
+
     def __init__(self,
                  name: str,
                  hp: int,
@@ -122,6 +129,8 @@ When Elfs are attacked, they recover 5 HP."""
 class Gnome(Character):
     """The longer the gnome lives, the more furious he becomes
 If the gnome is attacked, his attack is increased by 20%, and defense by 10%"""
+    COLOR = Fore.YELLOW
+
     def __init__(self,
                  name: str,
                  hp: int,
@@ -141,12 +150,6 @@ If the gnome is attacked, his attack is increased by 20%, and defense by 10%"""
 
 class Arena:
     """Arena class."""
-    CLASSES_FORE_COLORS: Dict = {
-        'Human': Fore.CYAN,
-        'Ork': Fore.LIGHTRED_EX,
-        'Elf': Fore.GREEN,
-        'Gnome': Fore.YELLOW
-    }
 
     def __init__(self,
                  races,
@@ -182,15 +185,14 @@ class Arena:
                                          randint(1, 3))
                     characters[i].set_thing(thing)
                     things_names_copy.remove(thing.name)
-            print(Back.BLACK +  Fore.RESET + str(i))
-            print(self.CLASSES_FORE_COLORS[characters[i].__class__.__name__] +
-                  characters[i].__doc__)
+            print(Back.BLACK + Fore.RESET + str(i))
+            print(characters[i].COLOR + characters[i].__doc__)
             print(f'{characters[i].show_fighter_info().get_information()}\n')
             sleep(0.5)
 
         fighters: List = []
         first_fighter_index: int = int(input(Fore.RESET + 'Choose your fighter '
-                                            '(a number from 0 to 9): '))
+                                       '(a number from 0 to 9): '))
         print()
         first_fighter: Character = characters[first_fighter_index]
         fighters.append(first_fighter)
@@ -237,7 +239,7 @@ class Arena:
 
             if defending.hp <= 0:
                 break
-        print(fore_color + f'{attacking.name} wins!\n')
+        print(fore_color + f'{attacking.name} the {attacking.__class__.__name__} wins!\n')
 
 
 races = [Human, Ork, Elf, Gnome]
